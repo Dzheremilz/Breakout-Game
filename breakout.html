@@ -37,6 +37,8 @@
     var brickOffsetTop = 30
     var brickOffsetLeft = 30
 
+    // game info
+    var score = 0
 
     var bricks = [];
     for (var c = 0; c < brickColumnCount; c++) {
@@ -112,10 +114,22 @@
               dy = -dy;
               b.status = 0
               ballColor = "#" + ((1 << 24) * Math.random() | 0).toString(16)
+              score++
+              if (score == brickRowCount * brickColumnCount) {
+                alert("YOU WIN, CONGRATULATIONS!");
+                document.location.reload();
+                clearInterval(interval); // Needed for Chrome to end game
+              }
             }
           }
         }
       }
+    }
+
+    function drawScore() {
+      ctx.font = "1.3rem Garamond";
+      ctx.fillStyle = "yellow";
+      ctx.fillText("Score: " + score, 8, 20);
     }
 
     function draw() {
@@ -124,6 +138,7 @@
       drawPaddle()
       drawBricks()
       collisionDetection()
+      drawScore()
 
       if (y + dy < ballRadius) {
         dy = -dy
@@ -140,9 +155,9 @@
         }
       }
       if (x + dx < 0) {
-        x += canvas.width
+        dx = -dx
       } else if (x + dx > canvas.width) {
-        x -= canvas.width
+        dx = -dx
       }
       x += dx
       y += dy
