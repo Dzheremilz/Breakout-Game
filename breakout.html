@@ -39,7 +39,7 @@
 
     // game info
     let score = 0
-    let lives = 3
+    let lives = 5
 
     let bricks = [];
     for (let c = 0; c < brickColumnCount; c++) {
@@ -143,7 +143,7 @@
     function drawLives() {
       ctx.font = "1.3rem Garamond";
       ctx.fillStyle = "yellow";
-      ctx.fillText("Lives: " + lives, canvas.width - 75, 20);
+      ctx.fillText("Lives: " + lives, canvas.width - 80, 20);
     }
 
     function draw() {
