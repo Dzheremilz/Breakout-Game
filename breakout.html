@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <h1>the breakout game</h1>
+  <h1 id="h1">the breakout game</h1>
   <canvas id="myCanvas" width="480" height="320"></canvas>
 
   <script>
@@ -19,7 +19,7 @@
     let y = canvas.height - 20
     let dx = 4
     let dy = -4
-    let ballSpeed = 1
+    let ballSpeed = 1.05
     let ballRadius = 10
     let ballColor = "teal"
     // paddle variable
@@ -121,6 +121,8 @@
               dy = -dy;
               b.status = 0
               ballColor = "#" + ((1 << 24) * Math.random() | 0).toString(16)
+              dy *= ballSpeed
+              dx *= ballSpeed
               score++
               if (score == brickRowCount * brickColumnCount) {
                 alert("YOU WIN, CONGRATULATIONS!");
@@ -158,8 +160,6 @@
       } else if (y + dy > canvas.height - ballRadius) {
         if (x > paddleX && x < paddleX + paddleWidth) {
           dy = -dy
-          dy *= ballSpeed
-          dx *= ballSpeed
         }
         else {
           lives--;
@@ -170,8 +170,8 @@
           else {
             x = canvas.width / 2;
             y = canvas.height - 30;
-            dx = 4;
-            dy = -4;
+            //dx = 4;
+            //dy = -4;
             paddleX = (canvas.width - paddleWidth) / 2;
           }
         }
@@ -199,6 +199,32 @@
       requestAnimationFrame(draw)
     }
     draw()
+  </script>
+
+  <script>
+    var pattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    var current = 0;
+
+    var keyHandler = function (event) {
+      // If the key isn't in the pattern, or isn't the current key in the pattern, reset
+      if (pattern.indexOf(event.key) < 0 || event.key !== pattern[current]) {
+        current = 0;
+        return;
+      }
+      // Update how much of the pattern is complete
+      current++;
+      // If complete, alert and reset
+      if (pattern.length === current) {
+        current = 0;
+        lives = 99
+        document.getElementById("h1").innerHTML = "the breakout CHEAT"
+        document.getElementById("h1").style.color = "red"
+        document.getElementById("myCanvas").style.backgroundImage = "url('firebg.jpg')"
+      }
+    };
+
+    // Listen for keydown events
+    document.addEventListener('keydown', keyHandler, false);
   </script>
 </body>
 
